@@ -1,0 +1,79 @@
+---
+title: "Regression linéaire"
+author: "Lusmat Menjy Willy CHARLES"
+date: "2022-12-08"
+output: word_document
+---
+
+#Importation des données
+
+```{r données}
+donnees=read.csv("CreditBancaire.csv")
+attach(donnees)
+```
+
+#Régression du nombre de jours de retard
+
+```{r regression}
+lin=lm(Jours~Credit+Type, data = donnees)
+lin
+```
+
+#Affichage des résultats detaillés de la regression
+
+```{r affichage}
+sim=summary(lin)
+sim
+```
+
+
+#Affichage de t value et les probabilités
+
+```{r tvalue et proba}
+summary(lin)$coefficients[,3]
+summary(lin)$coefficients[,4]
+
+```
+
+
+#Affichage des coefficients estimés et t value
+
+```{r coef et tvalue}
+summary(lin)$coefficients[,1]
+summary(lin)$coefficients[,3]
+```
+
+#graphique en nuage de points
+
+```{r graphique1}
+plot(Jours~Credit,pch=20)
+abline(lm(Jours~Credit,data = donnees),col='yellow',lwd=3)
+```
+
+
+#Creation d'une fonction
+
+```{r fonction}
+freg=function(data){
+  regress<-summary(lm(y ~.,data=data))
+  estimate<-regress$coefficients[,1]
+  tvalue<-regress$coefficients[,3]
+  return(data.frame(estimate,tvalue))
+}
+```
+
+#Verifions la fonction
+
+```{r verification}
+x=c(2,7,12,17,22,27,32,37,42,49)
+y=c(1,2,3,4,5,6,7,8,9,10)
+data=data.frame(x,y)
+freg(data)
+```
+
+
+
+
+
+
+
